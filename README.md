@@ -1,24 +1,14 @@
-# client
+# Chapper Electron client
 
-## Project setup
-```
-yarn install
-```
+## Tools
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+-   [Electron Builder](https://github.com/electron-userland/electron-builder)
+-   [Electron](https://www.electronjs.org/)
+-   [Vue](https://vuejs.org/)
+-   [Vue CLI](https://cli.vuejs.org/)
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Todo
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+-   Move Buttons to own Component
+-   Vue Component module attributes order: name, components, props, data, lifecycle hooks, methods
+-   Optimize Tabs
