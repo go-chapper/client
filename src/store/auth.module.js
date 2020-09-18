@@ -12,14 +12,10 @@ export const auth = {
                 rootState.homeServer != ''
                     ? rootState.homeServer
                     : rootState.setup.homeServer
-            console.log(baseURL)
 
-            return CryptoService.hashPassword(
-                username,
-                password,
-                process.env.VUE_APP_PUBLIC_CLIENT_SALT
-            )
+            return CryptoService.hashPassword(password, username)
                 .then(hashedPassword => {
+                    hashedPassword = CryptoService.string(hashedPassword)
                     return AuthService.login(baseURL, username, hashedPassword)
                 })
                 .then(response => {
@@ -29,25 +25,31 @@ export const auth = {
                     return response
                 })
         },
-        async register({ rootState }, { username, password, email }) {
+        async register(
+            { rootState },
+            { registerUsername, registerPassword, registerEmail }
+        ) {
             let baseURL =
                 rootState.homeServer != ''
                     ? rootState.homeServer
                     : rootState.setup.homeServer
-            console.log(baseURL)
 
             return CryptoService.hashPassword(
-                username,
-                password,
-                process.env.VUE_APP_PUBLIC_CLIENT_SALT
-            ).then(hashedPassword => {
-                return AuthService.register(
-                    baseURL,
-                    username,
-                    hashedPassword,
-                    email
-                )
-            })
+                registerPassword,
+                registerUsername
+            )
+                .then(hashedPassword => {
+                    hashedPassword = CryptoService.string(hashedPassword)
+                    return AuthService.register(
+                        baseURL,
+                        registerUsername,
+                        hashedPassword,
+                        registerEmail
+                    )
+                })
+                .catch(error => {
+                    return error
+                })
         },
     },
     mutations: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="setup__wrapper">
+    <div class="small__wrapper">
         <slot></slot>
     </div>
 </template>
@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.setup__wrapper {
+.small__wrapper {
     max-width: 600px;
     height: calc(100vh - 30px);
     margin: 0 auto;

@@ -1,32 +1,36 @@
 %btn {
+    display: inline-flex;
     align-items: center;
     border-radius: 5px;
     transition: 0.2s;
     cursor: pointer;
-    display: flex;
     margin: 0;
+    width: auto;
+
+    span {
+        font-size: 1.5rem;
+        // font-weight: 500;
+        pointer-events: none;
+    }
+
+    svg {
+        margin: 0 0 0 5px;
+        pointer-events: none;
+    }
 }
 
 .btn__primary {
     @extend %btn;
-    // border: 1px solid $secondaryDarkGrey;
     background-color: $primaryAccent;
     color: $primaryDarkBlue;
     align-items: center;
     padding: 10px 15px;
-    cursor: pointer;
-    height: 30px;
-    width: auto;
-
-    svg {
-        margin: 0 0 0 5px;
-    }
 }
 
 .btn__secondary {
     @extend %btn;
     border: 1px solid $secondaryDarkGrey;
-    background-color: $primaryDarkBlue;
+    background-color: $secondaryDarkGrey;
     justify-content: center;
     color: $primaryWhite;
     padding: 10px 15px;
@@ -34,10 +38,6 @@
     &:hover {
         background-color: $primaryAccent;
         color: $primaryDarkBlue;
-    }
-
-    svg {
-        margin: 0 0 0 5px;
     }
 
     &--square {

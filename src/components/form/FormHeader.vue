@@ -25,7 +25,7 @@ import ChevronLeft from '@/components/icons/chevron/ChevronLeftIcon'
 import SecondarySquareButton from '@/components/buttons/SecondarySquareButton'
 
 export default {
-    name: 'SetupHeader',
+    name: 'FormHeader',
     props: {
         next: String,
         prev: String,

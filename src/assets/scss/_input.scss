@@ -13,7 +13,8 @@ input {
     outline: none;
     color: $primaryWhite;
     border: 1px solid $secondaryDarkGrey;
-    background-color: $primaryDarkBlue;
+    border-radius: 5px;
+    background-color: $secondaryDarkGrey;
     margin: 0;
     padding: 5px 10px;
     width: 100%;

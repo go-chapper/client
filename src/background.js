@@ -1,6 +1,13 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, screen } from 'electron'
+import {
+    app,
+    protocol,
+    BrowserWindow,
+    ipcMain,
+    screen,
+    globalShortcut,
+} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -10,7 +17,7 @@ const path = require('path')
 let win
 
 protocol.registerSchemesAsPrivileged([
-    { scheme: 'app', privileges: { secure: true, standard: true } },
+    { scheme: 'chapper', privileges: { secure: true, standard: true } },
 ])
 
 function createWindow() {
@@ -22,6 +29,7 @@ function createWindow() {
         frame: false,
         backgroundColor: '#0f0f13',
         webPreferences: {
+            devTools: isDevelopment ? true : false,
             nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
             preload: path.join(__dirname, 'preload.js'),
         },
@@ -31,9 +39,17 @@ function createWindow() {
         win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
         if (!process.env.IS_TEST) win.webContents.openDevTools()
     } else {
-        createProtocol('app')
-        win.loadURL('app://./index.html')
+        createProtocol('chapper')
+        win.loadURL('chapper://./index.html')
     }
+
+    // Immediatly close the dev tools when they somehow got opened
+    win.webContents.on('devtools-opened', () => {
+        if (isDevelopment) {
+            return
+        }
+        win.webContents.closeDevTools()
+    })
 
     win.on('closed', () => {
         win = null
@@ -61,7 +77,9 @@ app.on('ready', async () => {
             console.error('Vue Devtools failed to install:', e.toString())
         }
     }
+
     createWindow()
+    registerShortcuts()
 })
 
 ipcMain.on('vue-close-app', () => {
@@ -79,6 +97,16 @@ ipcMain.on('vue-toggle-app', () => {
 ipcMain.on('vue-minimize-app', () => {
     win.minimize()
 })
+
+function registerShortcuts() {
+    // Prevent dev tools from being opened via Shortcut in production
+    globalShortcut.register('Control+Shift+I', () => {
+        if (isDevelopment) {
+            win.webContents.toggleDevTools()
+        }
+        return
+    })
+}
 
 if (isDevelopment) {
     if (process.platform === 'win32') {

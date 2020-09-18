@@ -1,6 +1,12 @@
 <template>
     <div class="os__navigation">
         <router-link class="os__navigation--title" to="/">Chapper</router-link>
+        <router-link class="os__navigation--title" to="/setup/welcome"
+            >Welcome</router-link
+        >
+        <router-link class="os__navigation--title" to="/auth/login"
+            >Login</router-link
+        >
         <minimize-button></minimize-button>
         <toggle-button></toggle-button>
         <close-button></close-button>

@@ -2,62 +2,57 @@
     <div class="setup__auth">
         <small-wrapper>
             <utils-center>
-                <setup-header
+                <form-header
                     headline="Register a new account or Login"
                     description="If you already have an account on this server, go ahead and login. If you don't have an account you can register one right now!"
                     next="next"
                     prev="prev"
                     @setupPrev="goBack"
                     @setupNext="loginOrRegister"
-                ></setup-header>
-                <setup-tabs
+                ></form-header>
+                <form-tabs
                     :tabs="['Login', 'Register']"
                     @setupSwitchTab="switchTab"
-                ></setup-tabs>
-                <div class="setup__tab__contents">
-                    <div
-                        class="tab__content"
-                        :class="{ active: active == 0 }"
-                        id="content-0"
-                    >
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            spellcheck="false"
-                            v-model="username"
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            spellcheck="false"
-                            v-model="password"
-                        />
-                    </div>
-                    <div
-                        class="tab__content"
-                        :class="{ active: active == 1 }"
-                        id="content-1"
-                    >
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            spellcheck="false"
-                            v-model="registerUsername"
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            spellcheck="false"
-                            v-model="registerPassword"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Email address (optional)"
-                            spellcheck="false"
-                            v-model="registerEmail"
-                        />
-                    </div>
-                </div>
+                >
+                    <template v-slot:tab-0>
+                        <form-wrapper>
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                spellcheck="false"
+                                v-model="username"
+                            />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                spellcheck="false"
+                                v-model="password"
+                            />
+                        </form-wrapper>
+                    </template>
+                    <template v-slot:tab-1>
+                        <form-wrapper>
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                spellcheck="false"
+                                v-model="registerUsername"
+                            />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                spellcheck="false"
+                                v-model="registerPassword"
+                            />
+                            <input
+                                type="text"
+                                placeholder="Email address (optional)"
+                                spellcheck="false"
+                                v-model="registerEmail"
+                            />
+                        </form-wrapper>
+                    </template>
+                </form-tabs>
             </utils-center>
         </small-wrapper>
     </div>
@@ -66,8 +61,9 @@
 <script>
 import UtilsCenter from '@/components/utils/UtilsCenter'
 import SmallWrapper from '@/components/utils/SmallWrapper'
-import SetupHeader from '@/components/setup/SetupHeader'
-import SetupTabs from '@/components/setup/SetupTabs'
+import FormHeader from '@/components/form/FormHeader'
+import FormTabs from '@/components/form/FormTabs'
+import FormWrapper from '@/components/form/FormWrapper'
 
 // import AuthModule from '@/modules/auth.module'
 
@@ -76,8 +72,9 @@ export default {
     components: {
         UtilsCenter,
         SmallWrapper,
-        SetupHeader,
-        SetupTabs,
+        FormHeader,
+        FormTabs,
+        FormWrapper,
     },
     data() {
         return {
@@ -124,35 +121,20 @@ export default {
                         registerPassword,
                         registerEmail,
                     })
-                    .then(response => {
-                        if (response.status == 200) {
-                            this.$store.commit('setSetupHomeServer', '')
-                            this.$store.commit('setHomeServer', url)
-                            return
+                    .then(
+                        response => {
+                            if (response.status == 200) {
+                                this.$store.commit('setSetupHomeServer', '')
+                                this.$store.commit('setHomeServer', url)
+                                return
+                            }
+                        },
+                        error => {
+                            console.error(error)
                         }
-                    })
+                    )
             }
         },
     },
 }
 </script>
-
-<style lang="scss" scoped>
-.setup__tab__contents {
-    position: relative;
-    height: 110px;
-
-    .tab__content {
-        width: 100%;
-        display: none;
-
-        &.active {
-            display: block;
-        }
-
-        input {
-            margin: 15px 0 0 0;
-        }
-    }
-}
-</style>

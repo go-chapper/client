@@ -1,5 +1,5 @@
 <template>
-    <router-link :class="classes" :to="to">
+    <router-link class="btn btn__secondary" :class="classes" :to="to">
         <slot></slot>
     </router-link>
 </template>
@@ -13,18 +13,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-a {
-    background-color: $primaryDarkBlue;
-    color: $primaryWhite;
-    border: 1px solid $secondaryDarkGrey;
-    border-radius: 5px;
-    margin: 0;
-    padding: 10px 15px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-}
-</style>

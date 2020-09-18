@@ -25,6 +25,9 @@ export default new Vuex.Store({
         getHomeServer: state => {
             return state.homeServer
         },
+        getHomeServerHost: state => {
+            return new URL(state.homeServer).hostname
+        },
         getSetupHomeServer: state => {
             return state.setup.homeServer
         },

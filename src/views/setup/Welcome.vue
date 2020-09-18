@@ -3,7 +3,7 @@
         <small-wrapper>
             <utils-center>
                 <h1>Welcome to Chapper</h1>
-                <router-link class="next" to="/setup/server"
+                <!-- <router-link class="next" to="/setup/server"
                     >Continue<svg
                         width="16"
                         height="16"
@@ -16,7 +16,11 @@
                             clip-rule="evenodd"
                             d="M9 13.887l5-5V8.18l-5-5-.707.707 4.146 4.147H2v1h10.44L8.292 13.18l.707.707z"
                         /></svg
-                ></router-link>
+                ></router-link> -->
+                <secondary-link to="/setup/server">
+                    <span>Continue</span>
+                    <arrow-right-icon></arrow-right-icon>
+                </secondary-link>
             </utils-center>
         </small-wrapper>
     </div>
@@ -25,12 +29,16 @@
 <script>
 import UtilsCenter from '@/components/utils/UtilsCenter'
 import SmallWrapper from '@/components/utils/SmallWrapper'
+import SecondaryLink from '@/components/links/SecondaryLink'
+import ArrowRightIcon from '@/components/icons/arrows/ArrowRightIcon'
 
 export default {
     name: 'SetupWelcome',
     components: {
         UtilsCenter,
         SmallWrapper,
+        SecondaryLink,
+        ArrowRightIcon,
     },
 }
 </script>
@@ -44,28 +52,8 @@ export default {
         text-align: center;
     }
 
-    .next {
-        background-color: $primaryDarkBlue;
-        color: $primaryWhite;
-        border: 1px solid $secondaryDarkGrey;
-        border-radius: 5px;
+    a {
         margin: 15px 0 0 0;
-        padding: 10px 15px;
-        font-size: 1.5rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
-
-        &:hover {
-            background-color: $primaryAccent;
-            color: $primaryDarkBlue;
-        }
-
-        svg {
-            margin: 0 0 0 5px;
-        }
     }
 }
 

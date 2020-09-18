@@ -1,8 +1,7 @@
 class CryptoService {
-    // import imports a password (string) as a crypto key. This returns a promise
-    import(password) {
-        const buff = this._stringToArrayBuffer(password)
-        return window.crypto.subtle.importKey('raw', buff, 'PBKDF2', false, [
+    // import imports a password (ArrayBuffer) as a crypto key. This returns a promise
+    import(payload) {
+        return window.crypto.subtle.importKey('raw', payload, 'PBKDF2', false, [
             'deriveKey',
         ])
     }
@@ -12,15 +11,17 @@ class CryptoService {
     }
 
     // derive derives a key from a base key and a salt
-    derive(key, salt) {
-        if (salt.byteLength === 0) {
+    derive(key, salt, iterations) {
+        if (salt === '') {
             return Promise.reject('Public client-side salt cannot be empty')
         }
+
+        const s = this._stringToArrayBuffer(salt)
         return window.crypto.subtle.deriveKey(
             {
                 name: 'PBKDF2',
-                salt: salt,
-                iterations: 100000,
+                salt: s,
+                iterations: iterations,
                 hash: 'SHA-256',
             },
             key,
@@ -55,31 +56,41 @@ class CryptoService {
         )
     }
 
-    // hashPassword hashes (salt || username || password)
-    async hashPassword(username, password, salt) {
-        if (salt === '') {
-            return Promise.reject('Public client-side salt cannot be empty')
-        }
-
-        const s = this._stringToArrayBuffer(salt)
-        return await this.import(password)
-            .then(key => {
-                return this.derive(key, s)
-            })
-            .then(pbkdf => {
-                return this.export(pbkdf)
-            })
-            .then(exp => {
-                const expString = this._arrayBufferToBase64String(exp)
-                return this.digest(salt + username + expString)
-            })
-            .then(dig => {
-                return this._arrayBufferToBase64String(dig)
+    // hashPassword generates a masterKey and returns masterKeyHash
+    async hashPassword(payload, salt) {
+        const payloadArrayBuffer = this._stringToArrayBuffer(payload)
+        const saltArrayBuffer = this._stringToArrayBuffer(salt)
+        return this.pbkdf2(payloadArrayBuffer, saltArrayBuffer, 100000)
+            .then(masterKey => {
+                return this.pbkdf2(masterKey, payloadArrayBuffer, 1)
             })
             .catch(error => {
                 console.error(error)
-                return ''
+                return error
             })
+    }
+
+    // pbkdf2 returns an exported PBKDF2 passphrase
+    async pbkdf2(payload, salt, iterations) {
+        return this.import(payload)
+            .then(importedKey => {
+                return this.derive(importedKey, salt, iterations)
+            })
+            .then(derivedKey => {
+                return this.export(derivedKey)
+            })
+            .catch(error => {
+                console.error(error)
+                return error
+            })
+    }
+
+    // string returns an ArrayBuffer as a Base64 encoded string
+    string(buffer) {
+        if (buffer instanceof ArrayBuffer) {
+            return this._arrayBufferToBase64String(buffer)
+        }
+        return ''
     }
 
     // _stringToArrayBuffer converts a string to an array buffer

@@ -2,12 +2,12 @@
     <div class="setup__server">
         <small-wrapper>
             <utils-center>
-                <setup-header
+                <form-header
                     headline="Configure home server"
                     description="The home server is the server you will connect to and which will save your account data - encypted of course!"
                     next="next"
                     @setupNext="checkURL"
-                ></setup-header>
+                ></form-header>
                 <div class="input__icon">
                     <input
                         type="text"
@@ -28,7 +28,7 @@
 
 <script>
 import UtilsCenter from '@/components/utils/UtilsCenter'
-import SetupHeader from '@/components/setup/SetupHeader'
+import FormHeader from '@/components/form/FormHeader'
 import SmallWrapper from '@/components/utils/SmallWrapper'
 import IssueIcon from '@/components/icons/basic/IssueIcon'
 
@@ -36,7 +36,7 @@ export default {
     name: 'SetupServer',
     components: {
         UtilsCenter,
-        SetupHeader,
+        FormHeader,
         SmallWrapper,
         IssueIcon,
     },
