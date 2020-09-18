@@ -34,6 +34,14 @@ const routes = [
                 /* webpackChunkName: "setup-auth" */ '../views/setup/Auth.vue'
             ),
     },
+    {
+        path: '/auth/login',
+        name: 'Authentication | Login',
+        component: () =>
+            import(
+                /* webpackChunkName: "auth-login" */ '../views/auth/Login.vue'
+            ),
+    },
 ]
 
 const router = new VueRouter({

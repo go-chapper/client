@@ -12,3 +12,6 @@
 -   Move Buttons to own Component
 -   Vue Component module attributes order: name, components, props, data, lifecycle hooks, methods
 -   Optimize Tabs
+-   Add input error handling (Highlighting, Tool tip, ...)
+-   Client side salt (how do we handle this?)
+-   Move Auth Module to store to access store

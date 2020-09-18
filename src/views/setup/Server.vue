@@ -1,6 +1,6 @@
 <template>
     <div class="setup__server">
-        <setup-wrapper>
+        <small-wrapper>
             <utils-center>
                 <setup-header
                     headline="Configure home server"
@@ -22,14 +22,14 @@
                     </div>
                 </div>
             </utils-center>
-        </setup-wrapper>
+        </small-wrapper>
     </div>
 </template>
 
 <script>
 import UtilsCenter from '@/components/utils/UtilsCenter'
 import SetupHeader from '@/components/setup/SetupHeader'
-import SetupWrapper from '@/components/setup/SetupWrapper'
+import SmallWrapper from '@/components/utils/SmallWrapper'
 import IssueIcon from '@/components/icons/basic/IssueIcon'
 
 export default {
@@ -37,7 +37,7 @@ export default {
     components: {
         UtilsCenter,
         SetupHeader,
-        SetupWrapper,
+        SmallWrapper,
         IssueIcon,
     },
     data: () => {

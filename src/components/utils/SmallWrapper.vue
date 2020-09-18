@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: 'SetupWrapper',
+    name: 'SmallWrapper',
 }
 </script>
 

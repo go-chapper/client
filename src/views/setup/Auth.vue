@@ -1,6 +1,6 @@
 <template>
     <div class="setup__auth">
-        <setup-wrapper>
+        <small-wrapper>
             <utils-center>
                 <setup-header
                     headline="Register a new account or Login"
@@ -8,6 +8,7 @@
                     next="next"
                     prev="prev"
                     @setupPrev="goBack"
+                    @setupNext="loginOrRegister"
                 ></setup-header>
                 <setup-tabs
                     :tabs="['Login', 'Register']"
@@ -41,38 +42,40 @@
                             type="text"
                             placeholder="Username"
                             spellcheck="false"
-                            v-model="username"
+                            v-model="registerUsername"
                         />
                         <input
                             type="password"
                             placeholder="Password"
                             spellcheck="false"
-                            v-model="password"
+                            v-model="registerPassword"
                         />
                         <input
                             type="text"
                             placeholder="Email address (optional)"
                             spellcheck="false"
-                            v-model="email"
+                            v-model="registerEmail"
                         />
                     </div>
                 </div>
             </utils-center>
-        </setup-wrapper>
+        </small-wrapper>
     </div>
 </template>
 
 <script>
 import UtilsCenter from '@/components/utils/UtilsCenter'
-import SetupWrapper from '@/components/setup/SetupWrapper'
+import SmallWrapper from '@/components/utils/SmallWrapper'
 import SetupHeader from '@/components/setup/SetupHeader'
 import SetupTabs from '@/components/setup/SetupTabs'
+
+// import AuthModule from '@/modules/auth.module'
 
 export default {
     name: 'SetupServer',
     components: {
         UtilsCenter,
-        SetupWrapper,
+        SmallWrapper,
         SetupHeader,
         SetupTabs,
     },
@@ -80,7 +83,10 @@ export default {
         return {
             username: '',
             password: '',
-            email: '',
+            registerUsername: '',
+            registerPassword: '',
+            registerEmail: '',
+            registerUsernameInvalid: false,
             active: 0,
         }
     },
@@ -90,6 +96,42 @@ export default {
         },
         switchTab(e) {
             this.active = e
+        },
+        loginOrRegister() {
+            let url = this.$store.getters.getSetupHomeServer
+
+            if (this.active == 0) {
+                const { username, password } = this
+                this.$store
+                    .dispatch('auth/login', { username, password })
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.$store.commit('setSetupHomeServer', '')
+                            this.$store.commit('setHomeServer', url)
+                            this.$router.push('/')
+                            return
+                        }
+                    })
+            } else {
+                const {
+                    registerUsername,
+                    registerPassword,
+                    registerEmail,
+                } = this
+                this.$store
+                    .dispatch('auth/register', {
+                        registerUsername,
+                        registerPassword,
+                        registerEmail,
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.$store.commit('setSetupHomeServer', '')
+                            this.$store.commit('setHomeServer', url)
+                            return
+                        }
+                    })
+            }
         },
     },
 }

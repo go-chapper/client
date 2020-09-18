@@ -1,6 +1,6 @@
 <template>
     <div class="setup__welcome">
-        <setup-wrapper>
+        <small-wrapper>
             <utils-center>
                 <h1>Welcome to Chapper</h1>
                 <router-link class="next" to="/setup/server"
@@ -18,19 +18,19 @@
                         /></svg
                 ></router-link>
             </utils-center>
-        </setup-wrapper>
+        </small-wrapper>
     </div>
 </template>
 
 <script>
 import UtilsCenter from '@/components/utils/UtilsCenter'
-import SetupWrapper from '@/components/setup/SetupWrapper'
+import SmallWrapper from '@/components/utils/SmallWrapper'
 
 export default {
     name: 'SetupWelcome',
     components: {
         UtilsCenter,
-        SetupWrapper,
+        SmallWrapper,
     },
 }
 </script>

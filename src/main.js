@@ -2,8 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import signaling from './services/signaling.service.js'
+
 import axios from 'axios'
+
+import signaling from './services/signaling.service'
 
 Vue.config.productionTip = false
 
