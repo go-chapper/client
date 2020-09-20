@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Entry from '../views/Entry.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
+        name: 'Entry',
+        component: Entry,
+    },
+    {
+        path: '/home',
         name: 'Home',
-        component: Home,
+        component: () =>
+            import(/* webpackChunkName: "home" */ '../views/Home.vue'),
     },
     {
         path: '/setup/welcome',
@@ -40,6 +46,14 @@ const routes = [
         component: () =>
             import(
                 /* webpackChunkName: "auth-login" */ '../views/auth/Login.vue'
+            ),
+    },
+    {
+        path: '/auth/code',
+        name: 'Authentication | Two-factor Authentication',
+        component: () =>
+            import(
+                /* webpackChunkName: "auth-code" */ '../views/auth/Code.vue'
             ),
     },
 ]

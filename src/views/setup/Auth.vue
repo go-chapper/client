@@ -1,7 +1,7 @@
 <template>
     <div class="setup__auth">
         <small-wrapper>
-            <utils-center>
+            <utils-center classes="wrapper">
                 <form-header
                     headline="Register a new account or Login"
                     description="If you already have an account on this server, go ahead and login. If you don't have an account you can register one right now!"

@@ -1,8 +1,8 @@
 <template>
     <div class="os__navigation">
         <router-link class="os__navigation--title" to="/">Chapper</router-link>
-        <router-link class="os__navigation--title" to="/setup/welcome"
-            >Welcome</router-link
+        <router-link class="os__navigation--title" to="/auth/code"
+            >Code</router-link
         >
         <router-link class="os__navigation--title" to="/auth/login"
             >Login</router-link
@@ -38,13 +38,13 @@ export default {
     display: grid;
     grid-template-columns: 100px auto 40px 40px 40px;
     grid-template-rows: 30px;
-    background-color: #0f0f13;
-    border-bottom: 1px solid #22222b;
+    background-color: $primaryBG;
+    border-bottom: 1px solid $secondaryDarkGrey;
     z-index: 20;
     -webkit-app-region: drag;
 
     &--title {
-        color: #a7a7a7;
+        color: $secondaryLightGrey;
         line-height: 30px;
         font-weight: 700;
         font-size: 1.3rem;

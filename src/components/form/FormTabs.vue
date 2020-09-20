@@ -76,7 +76,6 @@ export default {
 
     .items {
         position: relative;
-        height: 110px;
 
         .item {
             width: 100%;

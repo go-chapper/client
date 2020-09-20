@@ -1,7 +1,7 @@
 <template>
     <div class="setup__server">
         <small-wrapper>
-            <utils-center>
+            <utils-center classes="wrapper">
                 <form-header
                     headline="Configure home server"
                     description="The home server is the server you will connect to and which will save your account data - encypted of course!"

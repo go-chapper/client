@@ -27,9 +27,9 @@ function createWindow() {
         height: Math.round(height * 0.75),
         title: 'Chapper',
         frame: false,
-        backgroundColor: '#0f0f13',
+        backgroundColor: '#0d0d0e',
         webPreferences: {
-            devTools: isDevelopment ? true : false,
+            devTools: isDevelopment,
             nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
             preload: path.join(__dirname, 'preload.js'),
         },

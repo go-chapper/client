@@ -70,7 +70,7 @@ export default {
                 .dispatch('auth/login', { username, password })
                 .then(response => {
                     if (response.status == 200) {
-                        if (response.data.action == 'login') {
+                        if (response.data.state == 'authenticated') {
                             this.$router.push('/')
                             return
                         }

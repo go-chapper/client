@@ -1,29 +1,24 @@
 <template>
-    <div class="home"></div>
+    <div class="home">
+        <vertical-navigation>
+            <profile-avatar-link></profile-avatar-link>
+        </vertical-navigation>
+    </div>
 </template>
 
 <script>
+import VerticalNavigation from '@/components/navigation/VerticalNavigation'
+import ProfileAvatarLink from '@/components/profile/ProfileAvatarLink'
+
 export default {
     name: 'Home',
+    components: {
+        VerticalNavigation,
+        ProfileAvatarLink,
+    },
     data: () => {
         return {}
     },
-    mounted() {
-        const homeServer = this.$store.getters.getHomeServer
-        if (homeServer == '') {
-            this.$router.push('setup/welcome')
-            return
-        }
-
-        const jwt = this.$store.getters['auth/getJwt']
-        if (jwt == '') {
-            this.$router.push('auth/login')
-            return
-        }
-
-        const parts = jwt.split('.')
-        const claims = JSON.parse(atob(parts[1]))
-        console.log(claims)
-    },
+    mounted() {},
 }
 </script>
