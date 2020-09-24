@@ -18,7 +18,7 @@ class AuthService {
 
     // register hits up the auth/register endpoint to register a new user with the
     // provided username and password
-    register(baseURL, username, password, email) {
+    register(baseURL, username, password, email, publicKey) {
         const url = new URL('/auth/register', baseURL)
 
         return axios
@@ -26,6 +26,7 @@ class AuthService {
                 username: username,
                 password: password,
                 email: email,
+                publicKey: publicKey,
             })
             .then(
                 response => {

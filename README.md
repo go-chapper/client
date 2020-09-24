@@ -9,9 +9,10 @@
 
 ## Todo
 
--   Move Buttons to own Component
--   Vue Component module attributes order: name, components, props, data, lifecycle hooks, methods
--   Optimize Tabs
--   Add input error handling (Highlighting, Tool tip, ...)
--   Client side salt (how do we handle this?)
--   Move Auth Module to store to access store
+-   [x] Client side salt (how do we handle this?)
+-   [x] Move Auth Module to store to access store
+-   [ ] Save wrapped private key (Use a wrappingKey based on the users password)
+-   [ ] Move Buttons to own Component
+-   [ ] Vue Component module attributes order: name, components, props, data, lifecycle hooks, methods
+-   [ ] Optimize Form Tabs
+-   [ ] Add input error handling (Highlighting, Tool tip, ...)

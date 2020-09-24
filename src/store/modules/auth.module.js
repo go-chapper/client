@@ -30,35 +30,46 @@ export const auth = {
                     }
                     return response
                 })
+                .catch(error => {
+                    return error
+                })
         },
         async register(
             { rootState },
-            { registerUsername, registerPassword, registerEmail }
+            { username, password, email, publicKey }
         ) {
             let baseURL =
                 rootState.homeServer != ''
                     ? rootState.homeServer
                     : rootState.setup.homeServer
 
-            return CryptoService.hashPassword(
-                registerPassword,
-                registerUsername
-            )
+            return CryptoService.hashPassword(password, username)
                 .then(hashedPassword => {
                     hashedPassword = CryptoService.string(hashedPassword)
                     return AuthService.register(
                         baseURL,
-                        registerUsername,
+                        username,
                         hashedPassword,
-                        registerEmail
+                        email,
+                        publicKey
                     )
+                })
+                .then(response => {
+                    return response
                 })
                 .catch(error => {
                     return error
                 })
         },
+        reset({ commit }) {
+            commit('reset')
+        },
     },
     mutations: {
+        reset: state => {
+            state.jwt = ''
+            state.claims = null
+        },
         setJwt: (state, jwt) => {
             state.jwt = jwt
         },

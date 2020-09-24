@@ -36,19 +36,19 @@
                                 type="text"
                                 placeholder="Username"
                                 spellcheck="false"
-                                v-model="registerUsername"
+                                v-model="username"
                             />
                             <input
                                 type="password"
                                 placeholder="Password"
                                 spellcheck="false"
-                                v-model="registerPassword"
+                                v-model="password"
                             />
                             <input
                                 type="text"
                                 placeholder="Email address (optional)"
                                 spellcheck="false"
-                                v-model="registerEmail"
+                                v-model="email"
                             />
                         </form-wrapper>
                     </template>
@@ -80,12 +80,12 @@ export default {
         return {
             username: '',
             password: '',
-            registerUsername: '',
-            registerPassword: '',
-            registerEmail: '',
-            registerUsernameInvalid: false,
+            email: '',
             active: 0,
         }
+    },
+    mounted() {
+        this.$store.dispatch('auth/reset')
     },
     methods: {
         goBack() {
@@ -110,29 +110,28 @@ export default {
                         }
                     })
             } else {
-                const {
-                    registerUsername,
-                    registerPassword,
-                    registerEmail,
-                } = this
+                const { username, password, email } = this
                 this.$store
-                    .dispatch('auth/register', {
-                        registerUsername,
-                        registerPassword,
-                        registerEmail,
+                    .dispatch('keys/generateKeypair')
+                    .then(publicKey => {
+                        return this.$store.dispatch('auth/register', {
+                            username,
+                            password,
+                            email,
+                            publicKey,
+                        })
                     })
-                    .then(
-                        response => {
-                            if (response.status == 200) {
-                                this.$store.commit('setSetupHomeServer', '')
-                                this.$store.commit('setHomeServer', url)
-                                return
-                            }
-                        },
-                        error => {
-                            console.error(error)
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.$store.commit('setSetupHomeServer', '')
+                            this.$store.commit('setHomeServer', url)
+                            this.$router.push('/auth/login')
+                            return
                         }
-                    )
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
             }
         },
     },

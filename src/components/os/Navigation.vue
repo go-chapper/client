@@ -1,7 +1,7 @@
 <template>
     <div class="os__navigation">
         <router-link class="os__navigation--title" to="/">Chapper</router-link>
-        <router-link class="os__navigation--title" to="/auth/code"
+        <router-link class="os__navigation--title" to="/setup/welcome"
             >Code</router-link
         >
         <router-link class="os__navigation--title" to="/auth/login"

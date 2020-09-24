@@ -1,17 +1,27 @@
 import CryptoService from '../../services/crypto.service'
 import KeyService from '../../services/key.service'
+import localforage from 'localforage'
+
+localforage.setDriver(localforage.INDEXEDDB)
 
 export const keys = {
     namespaced: true,
     state: {
         public_keys: new Map(),
-        keypair: null,
     },
     actions: {
-        async generateKeypair({ commit }) {
-            return CryptoService.generateKeypair().then(keypair => {
-                commit('setKeypair', keypair)
-            })
+        async generateKeypair() {
+            const keypair = await CryptoService.generateKeypair()
+            const publicKey = await CryptoService.exportSPKI(keypair.publicKey)
+
+            return localforage
+                .setItem('chapper-keypair', keypair)
+                .then(() => {
+                    return jsonEscape(publicKey)
+                })
+                .catch(error => {
+                    console.error(error)
+                })
         },
         async getPublickey({ commit, rootState }, username) {
             let baseURL =
@@ -22,24 +32,26 @@ export const keys = {
             return KeyService.getPublicKey(baseURL, username).then(
                 publickey => {
                     commit('setPublickey', { username, publickey })
+                    return publickey
                 }
             )
         },
     },
     mutations: {
-        setKeypair: (state, keypair) => {
-            state.keypair = keypair
-        },
         setPublickey: (state, { username, publickey }) => {
             state.public_keys.set(username, publickey)
         },
     },
     getters: {
-        getKeypair: state => {
-            return state.keypair
-        },
         getPublickey: state => username => {
             return state.public_keys.get(username)
         },
     },
+}
+
+function jsonEscape(str) {
+    return str
+        .replace(/\n/g, '\\\\n')
+        .replace(/\r/g, '\\\\r')
+        .replace(/\t/g, '\\\\t')
 }

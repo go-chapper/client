@@ -58,6 +58,9 @@ export default {
             return this.$store.getters.getHomeServerHost
         },
     },
+    mounted() {
+        this.$store.dispatch('auth/reset')
+    },
     methods: {
         login() {
             const { username, password } = this
