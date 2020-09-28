@@ -56,6 +56,9 @@ function createWindow() {
     })
 }
 
+app.setAsDefaultProtocolClient('chapper')
+
+// App handlers
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -82,6 +85,11 @@ app.on('ready', async () => {
     registerShortcuts()
 })
 
+app.on('open-url', (event, url) => {
+    console.log(event, url)
+})
+
+// IPC handlers
 ipcMain.on('vue-close-app', () => {
     win.close()
 })

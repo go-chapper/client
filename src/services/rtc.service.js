@@ -1,7 +1,7 @@
-class RTC {
-    constructor() {
+export default class RTC {
+    constructor(host) {
         this.pc = null
-        this.host = window.location.hostname
+        this.host = host
         this.signaling = null
     }
 
@@ -10,7 +10,6 @@ class RTC {
 
         this.pc = new RTCPeerConnection({
             iceServers: [
-                // Information about ICE servers - Use your own!
                 {
                     urls: [
                         `turn:${this.host}:50554`,
@@ -34,6 +33,12 @@ class RTC {
     _handleTrackEvent() {}
 
     _handleNegotiationNeededEvent() {}
-}
 
-export default new RTC()
+    _handleRemoveTrackEvent() {}
+
+    _handleICEConnectionStateChangeEvent() {}
+
+    _handleICEGatheringStateChangeEvent() {}
+
+    _handleSignalingStateChangeEvent() {}
+}

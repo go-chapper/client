@@ -1,6 +1,12 @@
 {
-    "name": "client",
+    "name": "chapper",
     "version": "0.1.0",
+    "author": {
+        "email": "hi@web-warrior.de",
+        "name": "Techassi",
+        "url": "https://github.com/Techassi"
+    },
+    "description": "A text messenger and audio call service based on WebRTC and Go",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",

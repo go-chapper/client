@@ -24,10 +24,7 @@ export const keys = {
                 })
         },
         async getPublickey({ commit, rootState }, username) {
-            let baseURL =
-                rootState.homeServer != ''
-                    ? rootState.homeServer
-                    : rootState.setup.homeServer
+            let baseURL = rootState.homeServer
 
             return KeyService.getPublicKey(baseURL, username).then(
                 publickey => {

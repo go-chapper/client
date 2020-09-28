@@ -19,7 +19,6 @@ export default {
     },
     mounted() {
         const claims = this.$store.getters['auth/getClaims']
-        console.log(claims)
         this.username = claims.username
     },
 }
