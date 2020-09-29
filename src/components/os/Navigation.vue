@@ -1,12 +1,7 @@
 <template>
     <div class="os__navigation">
         <router-link class="os__navigation--title" to="/">Chapper</router-link>
-        <router-link class="os__navigation--title" to="/setup/welcome"
-            >Code</router-link
-        >
-        <router-link class="os__navigation--title" to="/auth/login"
-            >Login</router-link
-        >
+        <div class="clear" @click="clear">Clear</div>
         <minimize-button></minimize-button>
         <toggle-button></toggle-button>
         <close-button></close-button>
@@ -24,6 +19,11 @@ export default {
         CloseButton,
         ToggleButton,
         MinimizeButton,
+    },
+    methods: {
+        clear() {
+            this.$store.commit('clearHomeServer')
+        },
     },
 }
 </script>
