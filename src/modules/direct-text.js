@@ -9,7 +9,7 @@ export default class DirectText {
             return
         }
 
-        this.baseURL = new URL(store.getters.getHomeServer)
+        this.baseURL = null
         this.connected = false
         this.onMessageCallback = null
 
@@ -20,6 +20,10 @@ export default class DirectText {
     async connect() {
         if (this.connected) {
             return Promise.reject('Already connected')
+        }
+
+        if (this.baseURL == null) {
+            this.baseURL = new URL(store.getters.getHomeServer)
         }
 
         const username = store.getters['auth/getUsername']

@@ -4,12 +4,14 @@
 
 <script>
 export default {
-    name: 'Home',
+    name: 'Entry',
     data: () => {
         return {}
     },
     mounted() {
+        console.log('Entry')
         const homeServer = this.$store.getters.getHomeServer
+        console.log(homeServer)
         if (homeServer == '') {
             this.$router.push('setup/welcome')
             return
