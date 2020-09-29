@@ -23,6 +23,9 @@ export default new Vuex.Store({
         setSetupHomeServer: (state, address) => {
             state.setup.homeServer = address
         },
+        clearHomeServer: state => {
+            state.homeServer = ''
+        },
     },
     getters: {
         getHomeServer: state => {
