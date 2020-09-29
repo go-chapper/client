@@ -1,9 +1,31 @@
+const publicPEMHeader = '-----BEGIN PUBLIC KEY-----'
+const publicPEMFooter = '-----END PUBLIC KEY-----'
+
 class CryptoService {
     // import imports a password (ArrayBuffer) as a crypto key. This returns a promise
     import(payload) {
         return window.crypto.subtle.importKey('raw', payload, 'PBKDF2', false, [
             'deriveKey',
         ])
+    }
+
+    async importSPKI(key) {
+        const keyContents = key.substring(
+            publicPEMHeader.length,
+            key.length - publicPEMFooter.length
+        )
+        const keyContentsBuffer = this._stringToArrayBuffer(atob(keyContents))
+
+        return await window.crypto.subtle.importKey(
+            'spki',
+            keyContentsBuffer,
+            {
+                name: 'RSA-OAEP',
+                hash: 'SHA-256',
+            },
+            true,
+            ['encrypt']
+        )
     }
 
     // exportRaw exports any given key in raw format
@@ -22,7 +44,7 @@ class CryptoService {
     async exportSPKI(key) {
         const exported = await window.crypto.subtle.exportKey('spki', key)
         const exportedString = this._arrayBufferToBase64String(exported)
-        return `-----BEGIN PUBLIC KEY-----\n${exportedString}\n-----END PUBLIC KEY-----`
+        return `${publicPEMHeader}${exportedString}${publicPEMFooter}`
     }
 
     // derive derives a key from a base key and a salt
@@ -89,12 +111,40 @@ class CryptoService {
             })
     }
 
+    // encryptWithPublickey encrypts the payload with the provided publicKey
+    encryptWithPublickey(payload, publicKey) {
+        return window.crypto.subtle.encrypt(
+            {
+                name: 'RSA-OAEP',
+            },
+            publicKey,
+            payload
+        )
+    }
+
+    decryptWithPrivateKey(ciphertext, privateKey) {
+        return window.crypto.subtle.decrypt(
+            {
+                name: 'RSA-OAEP',
+            },
+            privateKey,
+            ciphertext
+        )
+    }
+
     // string returns an ArrayBuffer as a Base64 encoded string
     string(buffer) {
         if (buffer instanceof ArrayBuffer) {
             return this._arrayBufferToBase64String(buffer)
         }
         return ''
+    }
+
+    // buffer returns string as an ArrayBuffer
+    buffer(s) {
+        if (typeof s == 'string') {
+            return this._stringToArrayBuffer(s)
+        }
     }
 
     // _stringToArrayBuffer converts a string to an array buffer

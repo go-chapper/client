@@ -7,7 +7,7 @@ localforage.setDriver(localforage.INDEXEDDB)
 export const keys = {
     namespaced: true,
     state: {
-        public_keys: new Map(),
+        publicKeys: Object,
     },
     actions: {
         async generateKeypair() {
@@ -17,38 +17,57 @@ export const keys = {
             return localforage
                 .setItem('chapper-keypair', keypair)
                 .then(() => {
-                    return jsonEscape(publicKey)
+                    return publicKey
                 })
                 .catch(error => {
                     console.error(error)
                 })
         },
-        async getPublickey({ commit, rootState }, username) {
-            let baseURL = rootState.homeServer
+        async getPrivateKey() {
+            return localforage
+                .getItem('chapper-keypair')
+                .then(keypair => {
+                    return keypair.privateKey
+                })
+                .catch(error => {
+                    return error
+                })
+        },
+        async getPublicKey({ commit, state, rootState }, { username, jwt }) {
+            if (state.publicKeys[username] != undefined) {
+                return state.publicKeys[username]
+            }
 
-            return KeyService.getPublicKey(baseURL, username).then(
+            let baseURL = rootState.homeServer
+            return KeyService.getPublicKey(baseURL, username, jwt).then(
                 publickey => {
                     commit('setPublickey', { username, publickey })
                     return publickey
                 }
             )
         },
+        reset({ commit }) {
+            commit('reset')
+        },
     },
     mutations: {
+        reset: state => {
+            state.publicKeys = Object
+        },
         setPublickey: (state, { username, publickey }) => {
-            state.public_keys.set(username, publickey)
+            state.publicKeys[username] = publickey
         },
     },
     getters: {
         getPublickey: state => username => {
-            return state.public_keys.get(username)
+            return state.publicKeys[username]
         },
     },
 }
 
-function jsonEscape(str) {
-    return str
-        .replace(/\n/g, '\\\\n')
-        .replace(/\r/g, '\\\\r')
-        .replace(/\t/g, '\\\\t')
-}
+// function jsonEscape(str) {
+//     return str
+//         .replace(/\n/g, '\\\\n')
+//         .replace(/\r/g, '\\\\r')
+//         .replace(/\t/g, '\\\\t')
+// }

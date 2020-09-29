@@ -45,7 +45,7 @@ class Signaling {
     SendChatOffer(to) {
         this.socket.send(
             JSON.stringify({
-                topic: 'new-chat-offer',
+                type: 'new-chat-offer',
                 from: this.username,
                 to: to,
             })
@@ -55,7 +55,7 @@ class Signaling {
     SendTextOffer(to, sdp) {
         this.socket.send(
             JSON.stringify({
-                topic: 'text-offer',
+                type: 'text-offer',
                 from: this.username,
                 to: to,
                 sdp: sdp,
@@ -102,7 +102,7 @@ class Signaling {
         console.info('[Signaling] 📡 Opened signaling websocket')
         this.socket.send(
             JSON.stringify({
-                topic: 'subscribe',
+                type: 'subscribe',
                 username: this.username,
                 token: this.token,
             })

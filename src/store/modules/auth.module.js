@@ -84,5 +84,8 @@ export const auth = {
         getClaims: state => {
             return state.claims
         },
+        getUsername: state => {
+            return state.claims.username
+        },
     },
 }
