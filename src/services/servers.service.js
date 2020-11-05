@@ -49,6 +49,24 @@ class ServersService {
             })
     }
 
+    // getServers returns all virtual servers
+    async getUserServers(baseURL, jwt) {
+        const url = new URL('/api/v1/me/servers', baseURL)
+
+        return axios
+            .get(url, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            })
+            .then(response => {
+                return response.data
+            })
+            .catch(error => {
+                return error
+            })
+    }
+
     updateServer() {}
 
     deleteServer(serverHash) {

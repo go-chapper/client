@@ -1,9 +1,7 @@
 <template>
     <div class="chat__message--send">
         <div class="bubble">
-            <span class="bubble__text"
-                >adadad ada dad ddffsaf fsaf fsfsf fsfsf fsf gghs gfs</span
-            >
+            <span class="bubble__text">{{ message }}</span>
             <span class="bubble__time"></span>
             <div class="bubble__ticks"></div>
         </div>
@@ -13,6 +11,9 @@
 <script>
 export default {
     name: 'ChatSendMessage',
+    props: {
+        message: String,
+    },
 }
 </script>
 

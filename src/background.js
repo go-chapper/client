@@ -48,7 +48,8 @@ function createWindow() {
         if (isDevelopment) {
             return
         }
-        win.webContents.closeDevTools()
+        return
+        // win.webContents.closeDevTools()
     })
 
     win.on('closed', () => {

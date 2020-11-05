@@ -16,7 +16,7 @@ export const auth = {
 
             return CryptoService.hashPassword(password, username)
                 .then(hashedPassword => {
-                    hashedPassword = CryptoService.string(hashedPassword)
+                    hashedPassword = CryptoService.ab2str(hashedPassword)
                     return AuthService.login(baseURL, username, hashedPassword)
                 })
                 .then(response => {
@@ -45,7 +45,7 @@ export const auth = {
 
             return CryptoService.hashPassword(password, username)
                 .then(hashedPassword => {
-                    hashedPassword = CryptoService.string(hashedPassword)
+                    hashedPassword = CryptoService.ab2str(hashedPassword)
                     return AuthService.register(
                         baseURL,
                         username,

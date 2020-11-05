@@ -1,6 +1,6 @@
 <template>
     <div class="chat__messages">
-        <chat-send-message></chat-send-message>
+        <chat-send-message :message="message"></chat-send-message>
     </div>
 </template>
 
@@ -11,6 +11,9 @@ export default {
     name: 'ChatMessages',
     components: {
         ChatSendMessage,
+    },
+    props: {
+        message: String,
     },
 }
 </script>

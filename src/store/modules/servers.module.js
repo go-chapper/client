@@ -28,6 +28,25 @@ export const servers = {
                     return error
                 })
         },
+        getUserServers({ commit, state, rootState }, force) {
+            if (state.servers.length != 0 && !force) {
+                return state.servers
+            }
+
+            const baseURL =
+                rootState.homeServer != ''
+                    ? rootState.homeServer
+                    : rootState.setup.homeServer
+            const jwt = rootState.auth.jwt
+
+            return ServersService.getUserServers(baseURL, jwt)
+                .then(servers => {
+                    commit('setServers', servers)
+                })
+                .catch(error => {
+                    return error
+                })
+        },
     },
     mutations: {
         setServers: (state, servers) => {

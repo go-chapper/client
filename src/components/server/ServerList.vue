@@ -19,7 +19,7 @@ export default {
     },
     mounted() {
         this.$store
-            .dispatch('servers/getAll', true)
+            .dispatch('servers/getUserServers', true)
             .then(servers => {
                 this.servers = servers
                 this.loaded = true

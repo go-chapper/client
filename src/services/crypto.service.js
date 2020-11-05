@@ -58,7 +58,7 @@ class CryptoService {
             return Promise.reject('Public client-side salt cannot be empty')
         }
 
-        const s = this._stringToArrayBuffer(salt)
+        const s = this.str2ab(salt)
         return window.crypto.subtle.deriveKey(
             {
                 name: 'PBKDF2',

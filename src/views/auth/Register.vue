@@ -3,7 +3,7 @@
         <small-wrapper>
             <utils-center>
                 <form-header
-                    headline="Login"
+                    headline="Register"
                     :description="`You are connected to ${homeServer}`"
                 ></form-header>
                 <form-wrapper>

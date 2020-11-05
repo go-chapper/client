@@ -1,7 +1,7 @@
 <template>
     <div class="chat">
         <chat-header></chat-header>
-        <chat-messages></chat-messages>
+        <chat-messages :message="message"></chat-messages>
         <chat-footer @chat-send-message="onChatSendMessage"></chat-footer>
     </div>
 </template>
@@ -18,13 +18,18 @@ export default {
         ChatFooter,
         ChatMessages,
     },
+    data() {
+        return {
+            message: '',
+        }
+    },
     methods: {
         onChatSendMessage(message) {
             this.$directText
                 .sendMessage({
                     type: 'message-text',
                     to: ['Test'],
-                    from: 'Test',
+                    from: 'Techassi',
                     data: message,
                 })
                 .catch(error => {
@@ -41,6 +46,7 @@ export default {
             .then(() => {
                 this.$directText.onMessage(msg => {
                     console.log(msg)
+                    this.message = msg
                 })
             })
             .catch(error => {
