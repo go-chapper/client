@@ -12,8 +12,8 @@ export default class RTC {
             iceServers: [
                 {
                     urls: [
-                        `turn:${this.host}:50554`,
-                        `stun:${this.host}:50554`,
+                        `turn:${this.host}:12345`,
+                        `stun:${this.host}:12345`,
                     ],
                 },
             ],

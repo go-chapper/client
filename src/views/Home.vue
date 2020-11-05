@@ -4,8 +4,7 @@
             <profile-avatar-link></profile-avatar-link>
             <server-list></server-list>
         </vertical-navigation>
-        <input type="text" v-model="message" />
-        <button @click="send">Send</button>
+        <chat></chat>
     </div>
 </template>
 
@@ -13,6 +12,7 @@
 import VerticalNavigation from '@/components/navigation/VerticalNavigation'
 import ProfileAvatarLink from '@/components/profile/ProfileAvatarLink'
 import ServerList from '@/components/server/ServerList'
+import Chat from '@/components/chat/Chat'
 
 export default {
     name: 'Home',
@@ -20,43 +20,7 @@ export default {
         VerticalNavigation,
         ProfileAvatarLink,
         ServerList,
-    },
-    data: () => {
-        return {
-            message: '',
-        }
-    },
-    methods: {
-        send() {
-            this.$directText
-                .sendMessage({
-                    type: 'message-text',
-                    to: ['Techassi'],
-                    from: 'Techassi',
-                    data: this.message,
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-        },
-        decryptedMessage(message) {
-            console.log(message)
-        },
-    },
-    mounted() {
-        this.$directText
-            .connect()
-            .then(() => {
-                this.$directText.onMessage(msg => {
-                    console.log(msg)
-                })
-            })
-            .catch(error => {
-                console.error(error)
-            })
-    },
-    beforeDestroy() {
-        this.$directText.disconnect()
+        Chat,
     },
 }
 </script>

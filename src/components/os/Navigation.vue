@@ -1,7 +1,9 @@
 <template>
     <div class="os__navigation">
         <router-link class="os__navigation--title" to="/">Chapper</router-link>
-        <div class="clear" @click="clear">Clear</div>
+        <router-link class="os__navigation--title" to="/auth/register"
+            >Register</router-link
+        >
         <minimize-button></minimize-button>
         <toggle-button></toggle-button>
         <close-button></close-button>

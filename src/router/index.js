@@ -49,6 +49,14 @@ const routes = [
             ),
     },
     {
+        path: '/auth/register',
+        name: 'Authentication | Register',
+        component: () =>
+            import(
+                /* webpackChunkName: "auth-register" */ '../views/auth/Register.vue'
+            ),
+    },
+    {
         path: '/auth/code',
         name: 'Authentication | Two-factor Authentication',
         component: () =>

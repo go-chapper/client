@@ -28,10 +28,10 @@ export const auth = {
                         const claims = JSON.parse(atob(parts[1]))
                         commit('setClaims', claims)
                     }
-                    return response
+                    return Promise.resolve(response)
                 })
                 .catch(error => {
-                    return error
+                    return Promise.reject(error)
                 })
         },
         async register(
@@ -55,10 +55,10 @@ export const auth = {
                     )
                 })
                 .then(response => {
-                    return response
+                    return Promise.resolve(response)
                 })
                 .catch(error => {
-                    return error
+                    return Promise.reject(error)
                 })
         },
         reset({ commit }) {

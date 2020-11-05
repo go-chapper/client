@@ -65,23 +65,23 @@ export default class DirectText {
 
         // Encrypt data
         // Create ArrayBuffer of payload
-        const payload = CryptoService.buffer(message.data)
+        const payload = CryptoService.str2ab(message.data)
         const jwt = store.getters['auth/getJwt']
         const username = message.to
 
         // Get public key of receiver
         return store
             .dispatch('keys/getPublicKey', { username, jwt })
-            .then(publicKey => {
-                return CryptoService.importSPKI(publicKey)
+            .then(public_key => {
+                return CryptoService.importSPKI(public_key)
             })
-            .then(publicKey => {
+            .then(public_key => {
                 // Encrypt with public key
-                return CryptoService.encryptWithPublickey(payload, publicKey)
+                return CryptoService.encryptWithPublickey(public_key, payload)
             })
             .then(encrypted => {
                 // Send encrypted message
-                message.data = CryptoService.string(encrypted)
+                message.data = CryptoService.ab2str(encrypted)
                 MessagingService.sendMessage(message)
             })
             .catch(error => {
@@ -92,23 +92,21 @@ export default class DirectText {
 
     async onMessageFn(e) {
         const message = JSON.parse(e.data)
-        const ciphertext = CryptoService.buffer(message.data)
-        const self = this
+        const ciphertext = CryptoService.str2ab(message.data)
 
         store
             .dispatch('keys/getPrivateKey')
-            .then(privateKey => {
-                console.log(privateKey)
+            .then(private_key => {
                 return CryptoService.decryptWithPrivateKey(
-                    ciphertext,
-                    privateKey
+                    private_key,
+                    ciphertext
                 )
             })
             .then(decrypted => {
-                console.log(decrypted)
-                self.onMessageCallback(decrypted)
+                this.onMessageCallback(CryptoService.ab2str(decrypted))
             })
             .catch(error => {
+                console.error(error)
                 return error
             })
     }

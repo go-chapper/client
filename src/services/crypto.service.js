@@ -1,5 +1,7 @@
-const publicPEMHeader = '-----BEGIN PUBLIC KEY-----'
-const publicPEMFooter = '-----END PUBLIC KEY-----'
+const PUBLIC_PEM_HEADER = '-----BEGIN PUBLIC KEY-----'
+const PUBLIC_PEM_FOOTER = '-----END PUBLIC KEY-----'
+const PRIVATE_PEM_HEADER = '-----BEGIN PRIVATE KEY-----'
+const PRIVATE_PEM_FOOTER = '-----END PRIVATE KEY-----'
 
 class CryptoService {
     // import imports a password (ArrayBuffer) as a crypto key. This returns a promise
@@ -11,14 +13,15 @@ class CryptoService {
 
     async importSPKI(key) {
         const keyContents = key.substring(
-            publicPEMHeader.length,
-            key.length - publicPEMFooter.length
+            PUBLIC_PEM_HEADER.length,
+            key.length - PUBLIC_PEM_FOOTER.length
         )
-        const keyContentsBuffer = this._stringToArrayBuffer(atob(keyContents))
+        const binaryString = window.atob(keyContents)
+        const binaryBuffer = this.str2ab(binaryString)
 
-        return await window.crypto.subtle.importKey(
+        return window.crypto.subtle.importKey(
             'spki',
-            keyContentsBuffer,
+            binaryBuffer,
             {
                 name: 'RSA-OAEP',
                 hash: 'SHA-256',
@@ -36,15 +39,17 @@ class CryptoService {
     // exportPKCS exports private keys in PKCS#8 format
     async exportPKCS(key) {
         const exported = await window.crypto.subtle.exportKey('pkcs8', key)
-        const exportedString = this._arrayBufferToBase64String(exported)
-        return `-----BEGIN PRIVATE KEY-----\n${exportedString}\n-----END PRIVATE KEY-----`
+        const exported_binary_string = this.ab2str(exported)
+        const exported_base64_string = window.btoa(exported_binary_string)
+        return `${PRIVATE_PEM_HEADER}${exported_base64_string}${PRIVATE_PEM_FOOTER}`
     }
 
     // exportSPKI exports public keys in SPKI format
     async exportSPKI(key) {
         const exported = await window.crypto.subtle.exportKey('spki', key)
-        const exportedString = this._arrayBufferToBase64String(exported)
-        return `${publicPEMHeader}${exportedString}${publicPEMFooter}`
+        const exported_binary_string = this.ab2str(exported)
+        const exported_base64_string = window.btoa(exported_binary_string)
+        return `${PUBLIC_PEM_HEADER}${exported_base64_string}${PUBLIC_PEM_FOOTER}`
     }
 
     // derive derives a key from a base key and a salt
@@ -71,11 +76,11 @@ class CryptoService {
     // pbkdf2 returns an exported PBKDF2 passphrase
     async pbkdf2(payload, salt, iterations) {
         return this.import(payload)
-            .then(importedKey => {
-                return this.derive(importedKey, salt, iterations)
+            .then(imported_key => {
+                return this.derive(imported_key, salt, iterations)
             })
-            .then(derivedKey => {
-                return this.exportRaw(derivedKey)
+            .then(derived_key => {
+                return this.exportRaw(derived_key)
             })
             .catch(error => {
                 console.error(error)
@@ -99,11 +104,11 @@ class CryptoService {
 
     // hashPassword generates a masterKey and returns masterKeyHash
     async hashPassword(payload, salt) {
-        const payloadArrayBuffer = this._stringToArrayBuffer(payload)
-        const saltArrayBuffer = this._stringToArrayBuffer(salt)
-        return this.pbkdf2(payloadArrayBuffer, saltArrayBuffer, 100000)
-            .then(masterKey => {
-                return this.pbkdf2(masterKey, payloadArrayBuffer, 1)
+        const payload_buffer = this.str2ab(payload)
+        const salt_buffer = this.str2ab(salt)
+        return this.pbkdf2(payload_buffer, salt_buffer, 100000)
+            .then(master_key => {
+                return this.pbkdf2(master_key, payload_buffer, 1)
             })
             .catch(error => {
                 console.error(error)
@@ -112,59 +117,47 @@ class CryptoService {
     }
 
     // encryptWithPublickey encrypts the payload with the provided publicKey
-    encryptWithPublickey(payload, publicKey) {
+    encryptWithPublickey(public_key, payload) {
         return window.crypto.subtle.encrypt(
             {
                 name: 'RSA-OAEP',
             },
-            publicKey,
+            public_key,
             payload
         )
     }
 
-    decryptWithPrivateKey(ciphertext, privateKey) {
+    decryptWithPrivateKey(private_key, ciphertext) {
         return window.crypto.subtle.decrypt(
             {
                 name: 'RSA-OAEP',
             },
-            privateKey,
+            private_key,
             ciphertext
         )
     }
 
-    // string returns an ArrayBuffer as a Base64 encoded string
-    string(buffer) {
-        if (buffer instanceof ArrayBuffer) {
-            return this._arrayBufferToBase64String(buffer)
-        }
-        return ''
+    encode(str) {
+        const enc = new TextEncoder()
+        return enc.encode(str)
     }
 
-    // buffer returns string as an ArrayBuffer
-    buffer(s) {
-        if (typeof s == 'string') {
-            return this._stringToArrayBuffer(s)
-        }
+    decode(buf) {
+        const dec = new TextDecoder()
+        return dec.decode(buf)
     }
 
-    // _stringToArrayBuffer converts a string to an array buffer
-    _stringToArrayBuffer(str) {
+    ab2str(buf) {
+        return String.fromCharCode.apply(null, new Uint8Array(buf))
+    }
+
+    str2ab(str) {
         const buf = new ArrayBuffer(str.length)
         const bufView = new Uint8Array(buf)
         for (let i = 0, strLen = str.length; i < strLen; i++) {
             bufView[i] = str.charCodeAt(i)
         }
         return buf
-    }
-
-    // _arrayBufferToBase64String returns the base64 representation of the array buffer
-    _arrayBufferToBase64String(buff) {
-        return btoa(
-            new Uint8Array(buff).reduce(
-                (s, b) => s + String.fromCharCode(b),
-                ''
-            )
-        )
     }
 }
 

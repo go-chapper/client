@@ -17,20 +17,20 @@ export const keys = {
             return localforage
                 .setItem('chapper-keypair', keypair)
                 .then(() => {
-                    return publicKey
+                    return Promise.resolve(publicKey)
                 })
                 .catch(error => {
-                    console.error(error)
+                    return Promise.reject(error)
                 })
         },
         async getPrivateKey() {
             return localforage
                 .getItem('chapper-keypair')
                 .then(keypair => {
-                    return keypair.privateKey
+                    return Promise.resolve(keypair.privateKey)
                 })
                 .catch(error => {
-                    return error
+                    return Promise.reject(error)
                 })
         },
         async getPublicKey({ commit, state, rootState }, { username, jwt }) {
