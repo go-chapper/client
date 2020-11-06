@@ -40,8 +40,10 @@ export const servers = {
             const jwt = rootState.auth.jwt
 
             return ServersService.getUserServers(baseURL, jwt)
-                .then(servers => {
+                .then(response => {
+                    const servers = response.data.servers
                     commit('setServers', servers)
+                    return Promise.resolve(servers)
                 })
                 .catch(error => {
                     return error

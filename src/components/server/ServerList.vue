@@ -1,9 +1,7 @@
 <template>
-    <div class="server__list">
-        <div v-if="loaded">
-            <div class="server__list--item" v-for="(s, i) in servers" :key="i">
-                {{ s }}
-            </div>
+    <div class="server__list" v-if="loaded">
+        <div class="server__list--item" v-for="(s, i) in servers" :key="i">
+            {{ s.name }}
         </div>
     </div>
 </template>
@@ -30,3 +28,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.server__list--item {
+    color: $primaryWhite;
+}
+</style>

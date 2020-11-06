@@ -60,10 +60,10 @@ class ServersService {
                 },
             })
             .then(response => {
-                return response.data
+                return Promise.resolve(response)
             })
             .catch(error => {
-                return error
+                return Promise.reject(error)
             })
     }
 
